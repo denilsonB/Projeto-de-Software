@@ -19,7 +19,7 @@ public class main {
 			System.out.println("0-Sair\n1-Criar Conta\n2-Criar comunidade\n3-Entrar numa comunidade\n4-listar membros das comunidades"
 					+ "\n5-Adicionar amigo\n6-Minhas informações\n7-Adicionar novo atributo\n8-Editar perfil\n9-Log in\n"
 					+ "10-Notificações\n11-Mandar mensagem\n12-Ver feed da comunidade\n"
-					+ "13-Postar no feed de noticias\n14-vizualisar feed");
+					+ "13-Postar no feed de noticias\n14-vizualisar feed\n15-Apagar conta");
 			String op = scanner.nextLine();
 			
 			if(op.equals("0")) {
@@ -153,7 +153,7 @@ public class main {
 					user.notifications.remove(Integer.parseInt(id)-1);
 				}
 			}else if(op.equals("11")) {
-				System.out.print("1-Amigo\n2-Comunidade\n3-Feed\n4-voltar:");
+				System.out.print("1-Amigo\n2-Comunidade\n3-voltar:");
 				String choice = scanner.nextLine();
 				if(choice.equals("1")) {
 					if(user.friends.size()>0) {
@@ -167,7 +167,7 @@ public class main {
 						user.newMessage(message);
 						accounts.get(Integer.parseInt(id)-2).newMessage(message);
 					}else {
-						System.out.print("Você não tem nenhum amigo :/ ");
+						System.out.println("Você não tem nenhum amigo :/ ");
 					}
 				}else if(choice.equals("2")) {
 					if(user.my_comunities.size()>0) {
@@ -180,7 +180,7 @@ public class main {
 						Messages message = new Messages(user,content);
 						comunities.get(Integer.parseInt(id)-2).newMessage(message);
 					}else {
-						System.out.print("Você não faz parte de nenhuma comunidade :/ ");
+						System.out.println("Você não faz parte de nenhuma comunidade :/ ");
 					}
 					
 				}
@@ -217,6 +217,40 @@ public class main {
 					if(user.getFriends().contains(m.getSender()) || m.getSender().equals(user)) {
 						System.out.println(m.getSender().attributes.get("nome")+": "+m.getContent());
 					}
+				}
+			}else if(op.equals("15")) {
+				System.out.print("Tem certeza que seja apagar a conta?\n1-Sim\n2-Não ");
+				String choice = scanner.nextLine();
+				if(choice.equals("1")) {
+					for(int i=0;i<feed_general.size();i++) {
+						if(feed_general.get(i).getSender().equals(user)){
+							feed_general.remove(i);
+						}
+					}
+					for(int i=0;i<feed_friends.size();i++) {
+						if(feed_friends.get(i).getSender().equals(user)){
+							feed_friends.remove(i);
+						}
+					}
+					for(User friend : user.getFriends()) {
+						for(int i=0;i<friend.my_messages.size();i++) {
+							if(friend.my_messages.get(i).getSender().equals(user)) {
+								friend.my_messages.remove(i);
+							}
+						}
+					}	
+					for(User friend : user.getFriends()) {
+						friend.friends.remove(user);
+					}
+					for(Comunity comun : user.getMy_comunities()) {
+						for(int i=0;i<comun.my_messages.size();i++) {
+							if(comun.my_messages.get(i).getSender().equals(user)) {
+								comun.my_messages.remove(i);
+							}
+						}
+					}
+					accounts.remove(user);
+					user = new User();
 				}
 			}
 		}
