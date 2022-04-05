@@ -1,84 +1,97 @@
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Set;
+import java.util.Map;
 
 public class User {
 	private static final AtomicInteger count = new AtomicInteger(0); 
 	
 	private int id_user;
-	private String login;
-	private String password;
-	private String name;
-	List<String> my_comunities = new ArrayList<String>();
+
+	List<Comunity> my_comunities = new ArrayList<Comunity>();
+	List<User> notifications = new ArrayList<User>();
 	List<User> friends = new ArrayList<User>();
 	List<Messages> my_messages = new ArrayList<Messages>();
-	
-	List<Entry<String,String>> attributes = new ArrayList<Entry<String,String>>();
+	LinkedHashMap<String,String> attributes = new LinkedHashMap<String, String>();
 	
 	public User() {
 		this.id_user = count.incrementAndGet();
 	}
 	
-	public User(String login, String password, String name) {
-		this.login = login;
-		this.password = password;
-		this.name = name;
-		this.id_user = count.incrementAndGet();
-	}
 
-	public void enter_comunity(String comunity_name) {
+	public void enter_comunity(Comunity comunity_name) {
 		this.my_comunities.add(comunity_name);
 	}
 	
-	public void my_info() {
-		//retona as informações do usuario
-		System.out.println("Login: " + this.getLogin());
-		System.out.println("Senha: " + this.getPassword());
-		System.out.println("Nome: " + this.getName());
-		System.out.println("Minhas comunidades:");
-		for(String comun : this.getMy_comunities()) {
-			System.out.println("-"+comun);
-		}
-		System.out.println("Amigos:");
-		for(User friend : this.getFriends()) {
-			System.out.println(friend.getName());
-		}
-		System.out.println("Messagens:");
-		for(Messages message : this.getMy_messages()) {
-			System.out.println(message.getContent());
+	
+	public void my_attributes() {		
+		Set<Map.Entry<String,String>> new_attributes = this.attributes.entrySet();
+		for (Map.Entry<String, String> it: new_attributes) {
+			System.out.println(it.getKey() + ":   " +  it.getValue());
 		}		
 	}
 	
-	public String getLogin() {
-		return login;
+	public void my_comunities() {
+		for(Comunity comun : my_comunities) {
+			System.out.println(comun.getId_comunity()+"-"+comun.getName());
+		}	
 	}
-
-	public void setLogin(String login) {
-		this.login = login;
+	
+	public void my_friends() {
+		for(User friend : this.getFriends()) {
+			System.out.println(friend.getId_user()+"-"+friend.attributes.get("nome"));
+		}		
 	}
-
-	public String getPassword() {
-		return password;
+	
+	public void my_messages() {
+		for(Messages message : this.getMy_messages()) {
+			System.out.println(message.getSender().attributes.get("nome")+": "+message.getContent());
+		}			
 	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void my_info() {
+		//retona as informações do usuario
+		my_attributes();
+		
+		
+		System.out.println("Minhas comunidades:");
+		this.my_comunities();
+		System.out.println("Amigos:");
+		this.my_friends();
+		System.out.println("Messagens:");
+		this.my_messages();
 	}
-
-	public String getName() {
-		return name;
+	
+	public void addAttribute(String key,String value) {
+		this.attributes.put(key, value);
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void editAttribute(String key,String value) {
+		this.attributes.replace(key, value);
 	}
-
+	public void newNotfication(User notification) {
+		this.notifications.add(notification);
+	}
+	
+	public void listNotifications() {
+		for(int i=0;i<this.notifications.size();i++) {
+			System.out.println(i+1+"-"+this.notifications.get(i).attributes.get("nome"));
+		}
+	}
+	
+	public void addFriend(User user) {
+		this.friends.add(user);
+	}
+	
+	public void newMessage(Messages message) {
+		this.my_messages.add(message);
+	}
+	
 	public int getId_user() {
 		return id_user;
 	}
 
-	public List<String> getMy_comunities() {
+	public List<Comunity> getMy_comunities() {
 		return my_comunities;
 	}
 
@@ -98,13 +111,6 @@ public class User {
 		this.my_messages = my_messages;
 	}
 
-	public List<Entry<String, String>> getAttributes() {
-		return attributes;
-	}
-
-	public void setAttributes(List<Entry<String, String>> attributes) {
-		this.attributes = attributes;
-	}
 
 	
 }
