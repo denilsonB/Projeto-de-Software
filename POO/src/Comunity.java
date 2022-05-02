@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Comunity {
+public class Comunity implements Messages{
 	private static final AtomicInteger count = new AtomicInteger(0); 
 	
 	private int id_comunity;
@@ -10,7 +10,7 @@ public class Comunity {
 	private int creator;
 	private String name;
 	private String description;
-	List<Messages> my_messages = new ArrayList<Messages>();
+	List<Message> my_messages = new ArrayList<Message>();
 	
 	public Comunity() {
 		this.id_comunity = count.incrementAndGet();
@@ -27,12 +27,12 @@ public class Comunity {
 		this.members.add(new_user);
 	}
 	
-	public void newMessage(Messages message) {
+	public void newMessage(Message message) {
 		this.my_messages.add(message);
 	}
 	
 	public void my_messages() {
-		for(Messages message : this.getMy_messages()) {
+		for(Message message : this.getMy_messages()) {
 			System.out.println(message.getSender().attributes.get("nome")+": "+message.getContent());
 		}			
 	}
@@ -68,11 +68,11 @@ public class Comunity {
 		return id_comunity;
 	}
 
-	public List<Messages> getMy_messages() {
+	public List<Message> getMy_messages() {
 		return my_messages;
 	}
 
-	public void setMy_messages(List<Messages> my_messages) {
+	public void setMy_messages(List<Message> my_messages) {
 		this.my_messages = my_messages;
 	}
 

@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Set;
 import java.util.Map;
 
-public class User {
+public class User implements Messages{
 	private static final AtomicInteger count = new AtomicInteger(0); 
 	
 	private int id_user;
@@ -13,7 +13,7 @@ public class User {
 	List<Comunity> my_comunities = new ArrayList<Comunity>();
 	List<User> notifications = new ArrayList<User>();
 	List<User> friends = new ArrayList<User>();
-	List<Messages> my_messages = new ArrayList<Messages>();
+	List<Message> my_messages = new ArrayList<Message>();
 	LinkedHashMap<String,String> attributes = new LinkedHashMap<String, String>();
 	
 	public User() {
@@ -46,10 +46,15 @@ public class User {
 	}
 	
 	public void my_messages() {
-		for(Messages message : this.getMy_messages()) {
+		for(Message message : this.getMy_messages()) {
 			System.out.println(message.getSender().attributes.get("nome")+": "+message.getContent());
 		}			
 	}
+	
+	public void newMessage(Message message) {
+		this.my_messages.add(message);
+	}
+	
 	public void my_info() {
 		//retona as informações do usuario
 		my_attributes();
@@ -83,9 +88,6 @@ public class User {
 		this.friends.add(user);
 	}
 	
-	public void newMessage(Messages message) {
-		this.my_messages.add(message);
-	}
 	
 	public int getId_user() {
 		return id_user;
@@ -99,17 +101,11 @@ public class User {
 		return friends;
 	}
 
-	public void setFriends(List<User> friends) {
-		this.friends = friends;
-	}
-
-	public List<Messages> getMy_messages() {
+	public List<Message> getMy_messages() {
 		return my_messages;
 	}
 
-	public void setMy_messages(List<Messages> my_messages) {
-		this.my_messages = my_messages;
-	}
+
 
 
 	
