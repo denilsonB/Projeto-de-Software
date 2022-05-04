@@ -7,8 +7,8 @@ import java.util.Scanner;
 public class main {
 	public static User login(List<User> accounts, String login, String senha) {
         for(User usr : accounts) {
-        	if(usr.attributes.get("login").equals(login)) {
-        		if(usr.attributes.get("senha").equals(senha)) {
+        	if(usr.getAttributes().get("login").equals(login)) {
+        		if(usr.getAttributes().get("senha").equals(senha)) {
         			System.out.print("Seja bem vindo!! ");
         			return usr;
  
@@ -120,7 +120,7 @@ public class main {
 					for( Comunity comuniti : comunities) {
 						System.out.println("Lista de membros da comunidade "+comuniti.getName());
 						for (User usr : comuniti.getMembers()) {
-							System.out.print(usr.attributes.get("nome"));
+							System.out.print(usr.getAttributes().get("nome"));
 							System.out.print("\n");
 						}
 					}
@@ -128,8 +128,8 @@ public class main {
 					if(accounts.size()>1) {
 						System.out.println("Lista de usuarios: ");
 						for( User usr : accounts) {
-							if(!usr.attributes.get("login").equals(user.attributes.get("login")))
-								System.out.println(usr.getId_user() + "-"+usr.attributes.get("nome"));
+							if(!usr.getAttributes().get("login").equals(user.getAttributes().get("login")))
+								System.out.println(usr.getId_user() + "-"+usr.getAttributes().get("nome"));
 						}
 				        System.out.print("Digite o id do usuario que você quer ser amigo: ");
 				        String id = scanner.nextLine();
@@ -167,19 +167,19 @@ public class main {
 					if(choice.equals("1")) {
 						System.out.print("Digite o Id da notificação que você quer aceitar: ");
 						String id = scanner.nextLine();
-						User usr = user.notifications.remove(Integer.parseInt(id)-1);
+						User usr = user.getNotifications().remove(Integer.parseInt(id)-1);
 						user.addFriend(usr);
 						accounts.set(accounts.indexOf(usr), usr).addFriend(user);
 					}else if(choice.equals("2")) {
 						System.out.print("Digite o Id da notificação que você quer rejeitar: ");
 						String id = scanner.nextLine();
-						user.notifications.remove(Integer.parseInt(id)-1);
+						user.getNotifications().remove(Integer.parseInt(id)-1);
 					}
 				}else if(op.equals("9")) {
 					System.out.print("1-Amigo\n2-Comunidade\n3-voltar:");
 					String choice = scanner.nextLine();
 					if(choice.equals("1")) {
-						if(user.friends.size()>0) {
+						if(user.getFriends().size()>0) {
 							user.my_friends();
 							System.out.print("Digite o Id do amigo que deseja mandar mensagem: ");
 							String id = scanner.nextLine();		
@@ -193,7 +193,7 @@ public class main {
 							System.out.println("Você não tem nenhum amigo :/ ");
 						}
 					}else if(choice.equals("2")) {
-						if(user.my_comunities.size()>0) {
+						if(user.getMy_comunities().size()>0) {
 							user.my_comunities();
 							System.out.print("Digite o Id da comunidade que deseja mandar mensagem: ");
 							String id = scanner.nextLine();		
@@ -208,7 +208,7 @@ public class main {
 						
 					}
 				}else if(op.equals("10")) {
-					if(user.my_comunities.size()>0) {
+					if(user.getMy_comunities().size()>0) {
 						user.my_comunities();
 						System.out.print("Digite o Id da comunidade que deseja ver o feed: ");
 						String id = scanner.nextLine();		
@@ -233,12 +233,12 @@ public class main {
 				}else if(op.equals("12")) {
 					System.out.println("Feed Geral: ");
 					for(int i=0;i<feed_general.size();i++) {
-						System.out.println(feed_general.get(i).getSender().attributes.get("nome")+": "+feed_general.get(i).getContent());
+						System.out.println(feed_general.get(i).getSender().getAttributes().get("nome")+": "+feed_general.get(i).getContent());
 					}
 					System.out.println("Feed Amigos: ");
 					for(Message m : feed_friends) {
 						if(user.getFriends().contains(m.getSender()) || m.getSender().equals(user)) {
-							System.out.println(m.getSender().attributes.get("nome")+": "+m.getContent());
+							System.out.println(m.getSender().getAttributes().get("nome")+": "+m.getContent());
 						}
 					}
 				}else if(op.equals("13")) {
@@ -256,19 +256,19 @@ public class main {
 							}
 						}
 						for(User friend : user.getFriends()) {
-							for(int i=0;i<friend.my_messages.size();i++) {
-								if(friend.my_messages.get(i).getSender().equals(user)) {
-									friend.my_messages.remove(i);
+							for(int i=0;i<friend.getMy_messages().size();i++) {
+								if(friend.getMy_messages().get(i).getSender().equals(user)) {
+									friend.getMy_messages().remove(i);
 								}
 							}
 						}	
 						for(User friend : user.getFriends()) {
-							friend.friends.remove(user);
+							friend.getFriends().remove(user);
 						}
 						for(Comunity comun : user.getMy_comunities()) {
-							for(int i=0;i<comun.my_messages.size();i++) {
-								if(comun.my_messages.get(i).getSender().equals(user)) {
-									comun.my_messages.remove(i);
+							for(int i=0;i<comun.getMy_messages().size();i++) {
+								if(comun.getMy_messages().get(i).getSender().equals(user)) {
+									comun.getMy_messages().remove(i);
 								}
 							}
 						}

@@ -10,11 +10,11 @@ public class User implements Messages{
 	
 	private int id_user;
 
-	List<Comunity> my_comunities = new ArrayList<Comunity>();
-	List<User> notifications = new ArrayList<User>();
-	List<User> friends = new ArrayList<User>();
-	List<Message> my_messages = new ArrayList<Message>();
-	LinkedHashMap<String,String> attributes = new LinkedHashMap<String, String>();
+	private List<Comunity> my_comunities = new ArrayList<Comunity>();
+	private List<User> notifications = new ArrayList<User>();
+	private List<User> friends = new ArrayList<User>();
+	private List<Message> my_messages = new ArrayList<Message>();
+	private LinkedHashMap<String,String> attributes = new LinkedHashMap<String, String>();
 	
 	public User() {
 		this.id_user = count.incrementAndGet();
@@ -103,6 +103,51 @@ public class User implements Messages{
 
 	public List<Message> getMy_messages() {
 		return my_messages;
+	}
+
+
+	public List<User> getNotifications() {
+		return notifications;
+	}
+
+
+	public void setNotifications(List<User> notifications) {
+		this.notifications = notifications;
+	}
+
+
+	public LinkedHashMap<String, String> getAttributes() {
+		return attributes;
+	}
+
+
+	public void setAttributes(LinkedHashMap<String, String> attributes) {
+		this.attributes = attributes;
+	}
+
+
+	public static AtomicInteger getCount() {
+		return count;
+	}
+
+
+	public void setId_user(int id_user) {
+		this.id_user = id_user;
+	}
+
+
+	public void setMy_comunities(List<Comunity> my_comunities) {
+		this.my_comunities = my_comunities;
+	}
+
+
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
+	}
+
+
+	public void setMy_messages(List<Message> my_messages) {
+		this.my_messages = my_messages;
 	}
 
 

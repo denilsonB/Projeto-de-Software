@@ -6,11 +6,11 @@ public class Comunity implements Messages{
 	private static final AtomicInteger count = new AtomicInteger(0); 
 	
 	private int id_comunity;
-	List<User> members = new ArrayList<User>();
+	private List<User> members = new ArrayList<User>();
 	private int creator;
 	private String name;
 	private String description;
-	List<Message> my_messages = new ArrayList<Message>();
+	private List<Message> my_messages = new ArrayList<Message>();
 	
 	public Comunity() {
 		this.id_comunity = count.incrementAndGet();
@@ -33,7 +33,7 @@ public class Comunity implements Messages{
 	
 	public void my_messages() {
 		for(Message message : this.getMy_messages()) {
-			System.out.println(message.getSender().attributes.get("nome")+": "+message.getContent());
+			System.out.println(message.getSender().getAttributes().get("nome")+": "+message.getContent());
 		}			
 	}
 	
